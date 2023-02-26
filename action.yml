@@ -1,0 +1,15 @@
+name: ssh-add-b64
+description: |
+  Performs a ssh-add on a base64 encoded SSH key
+
+inputs:
+  encoded-key:
+    description: A base64 encoded SSH key
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        eval $(ssh-agent); ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
