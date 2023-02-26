@@ -1,2 +1,3 @@
-# github.image-tag-from-git.action
-Generates a proper image tag from the current branch or tag
+# github.ssh-add-b64.action
+Performs a ssh-add on a base64 encoded SSH key
+
