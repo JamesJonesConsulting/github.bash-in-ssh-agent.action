@@ -20,7 +20,8 @@ runs:
   steps:
     - shell: bash
       run: |
-        if [[ -z "${{ inputs.key-passcode }}" ]]
+        pc='${{ inputs.key-passcode }}'
+        if [[ -z "$pc" ]]
         then
           eval $(ssh-agent); ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
         else
