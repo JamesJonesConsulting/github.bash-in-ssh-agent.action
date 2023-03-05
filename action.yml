@@ -6,10 +6,27 @@ inputs:
   encoded-key:
     description: A base64 encoded SSH key
     required: true
+  key-passcode:
+    description: Optional SSK key passcode
+    required: false
+    default: ''
+  run:
+    description: Addtional shell statements
+    required: false
+    default: ''
 
 runs:
   using: "composite"
   steps:
     - shell: bash
       run: |
-        eval $(ssh-agent); ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
+        if [[ -z "${{ inputs.key-passcode }}" ]]
+        then
+          eval $(ssh-agent); ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
+        else
+          eval $(ssh-agent); 
+          echo -e "#!/bin/sh\${{ inputs.key-passcode }}" > ${RUNNER_TEMP}/.kp
+          chmod +x ${RUNNER_TEMP}/.kp
+          DISPLAY=1 SSH_ASKPASS="${RUNNER_TEMP}/.kp" ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
+        fi
+        ${{ inputs.run }}
