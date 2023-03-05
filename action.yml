@@ -26,7 +26,7 @@ runs:
           eval $(ssh-agent); ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
         else
           eval $(ssh-agent); 
-          echo -e "#!/bin/sh\n${{ inputs.key-passcode }}" > ${RUNNER_TEMP}/.kp
+          echo -e "#!/bin/sh\necho '${{ inputs.key-passcode }}'" > ${RUNNER_TEMP}/.kp
           chmod +x ${RUNNER_TEMP}/.kp
           DISPLAY=1 SSH_ASKPASS="${RUNNER_TEMP}/.kp" ssh-add <(echo -n '${{ inputs.encoded-key }}' | base64 -d);
         fi
