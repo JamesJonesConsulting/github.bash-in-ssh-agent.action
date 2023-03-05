@@ -1,6 +1,9 @@
 name: ssh-add-b64
 description: |
   Performs a ssh-add on a base64 encoded SSH key
+branding:
+  icon: 'arrow-right-circle'
+  color: 'gray-dark'
 
 inputs:
   encoded-key:
